@@ -54,11 +54,11 @@
     describe('last', function() {
 
       it('should pull the last element from an array', function() {
-        expect(_.last([1, 2, 3])).to.equal([3]);
+        expect(_.last([1, 2, 3])).to.equal(3);
       });
 
       it('should accept an index argument', function() {
-        expect(_.last([1, 2, 3], 2)).to.eql(3);
+        expect(_.last([1, 2, 3], 2)).to.eql([3]);
       });
 
       it('should return empty array if zero is passed in as the index', function() {
@@ -126,7 +126,7 @@
           iterations.push([letter, index]);
         });
 
-        expect(iterations).to.eql(['a', 0, 'b', 1, 'c', 2]);
+        expect(iterations).to.eql([['a', 0], ['b', 1], ['c', 2]]);
       });
 
       it('should iterate over arrays and provide access to the original collection', function() {
@@ -236,7 +236,7 @@
 
       it('returns the first index that the target can be found at when there are multiple matches', function() {
         var numbers = [10, 20, 30, 20, 40, 50];
-        expect(_.indexOf(numbers, 20).to.equal(1));
+        expect(_.indexOf(numbers, 20)).to.equal(1);
       });
     });
 

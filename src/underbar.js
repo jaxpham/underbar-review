@@ -40,7 +40,16 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    return n === undefined ? array[array.length - 1] : array.slice(n, array[array.length]);
+    if (n === 0) {
+      return [];
+    }
+
+    if (n === undefined) {
+      return array[array.length - 1];
+    } else {
+      return array.slice(-n + 1);
+    }
+
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -49,6 +58,15 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+    if (Array.isArray(collection) === true) {
+      for (var i = 0; i < collection.length; i++) {
+        iterator(collection[i], i, collection);
+      }
+    } else if (typeof collection === 'object') {
+      for (var key in collection) {
+        iterator(collection[key], key, collection);
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -70,16 +88,72 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var result = [];
+
+    _.each(collection, function(item, index, collection) {
+      if (test(item) === true) {
+        result.push(item);
+      }
+    });
+
+    return result;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    var result = [];
+
+    _.each(collection, function(item, index, collection) {
+      if (test(item) === false) {
+        result.push(item);
+      }
+    });
+
+    return result;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    var copy = array.slice();
+    var obj = {};
+    var arr = [];
+
+
+    // _.each(copy, function(item, index, collection) {
+    //   if (iterator !== undefined) {
+    //     var current = iterator(item);
+    //     if (obj[current] === undefined) {
+    //       obj[current] = 1;
+    //       arr.push(item);
+    //     } else {
+    //       obj[current]++;
+    //     }
+    //   } else if (obj[item] === undefined) {
+    //     arr.push(item);
+    //   }
+    // });
+
+
+    if (iterator === undefined) {
+      _.each(copy, function(item, index, collection) {
+        if (arr[item] === undefined) {
+          arr.push(item);
+        }
+      });
+    } else {
+      _.each(copy, function(item, index) {
+        var current = iterator(item);
+        if (obj[current] === undefined) {
+          obj[current] = 1;
+          arr.push(copy[index]);
+        }
+      });
+    }
+
+    return arr;
+
   };
 
 
